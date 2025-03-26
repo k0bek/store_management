@@ -5,6 +5,7 @@ import com.example.store.domain.dtos.StoreDto;
 import com.example.store.domain.entities.Store;
 import com.example.store.mappers.StoreMapper;
 import com.example.store.services.StoreService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,7 @@ public class StoreController {
     private final StoreMapper storeMapper;
 
     @PostMapping
-    public ResponseEntity<StoreDto> createStore(@RequestBody CreateStoreRequest store) {
+    public ResponseEntity<StoreDto> createStore(@Valid @RequestBody CreateStoreRequest store) {
         Store storeToCreate = storeMapper.toEntity(store);
         Store createdStore = storeService.createStore(storeToCreate);
         return new ResponseEntity<>(storeMapper.toDto(createdStore), HttpStatus.CREATED);
