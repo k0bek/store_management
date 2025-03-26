@@ -12,14 +12,8 @@ import org.mapstruct.ReportingPolicy;
         unmappedTargetPolicy = ReportingPolicy.IGNORE
 )
 public interface StoreMapper {
-    @Mapping(source = "id", target = "id")
-    @Mapping(source = "name", target = "name")
-    @Mapping(source = "address", target = "address")
+
     StoreDto toDto(Store store);
 
-    @Mapping(source = "name", target = "name")
-    @Mapping(source = "address", target = "address")
-    @Mapping(source = "totalCapacity", target = "totalCapacity")
-    @Mapping(source = "storeType", target = "storeType")
     Store toEntity(CreateStoreRequest createStoreRequest);
 }
