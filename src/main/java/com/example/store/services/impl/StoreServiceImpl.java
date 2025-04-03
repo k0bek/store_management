@@ -1,5 +1,6 @@
 package com.example.store.services.impl;
 
+import com.example.store.domain.Quantity;
 import com.example.store.domain.entities.Store;
 import com.example.store.domain.entities.StoreItem;
 import com.example.store.repositories.StoreItemRepository;
@@ -26,12 +27,7 @@ public class StoreServiceImpl implements StoreService {
         StoreItem storeItem = storeItemRepository.findById(itemId)
                 .orElseThrow(() -> new IllegalArgumentException("Store item not found"));
 
-        int decreasedQuantity = storeItem.getQuantity() - quantity;
-        if (decreasedQuantity < 0) {
-            throw new IllegalArgumentException("Not enough quantity");
-        }
-
-        storeItem.setQuantity(decreasedQuantity);
+        storeItem.decreaseQuantity( quantity);
         storeItemRepository.save(storeItem);
     }
 
@@ -39,8 +35,7 @@ public class StoreServiceImpl implements StoreService {
         StoreItem storeItem = storeItemRepository.findById(itemId)
                 .orElseThrow(() -> new IllegalArgumentException("Store item not found"));
 
-        int increasedQuantity = storeItem.getQuantity() + quantity;
-        storeItem.setQuantity(increasedQuantity);
+        storeItem.increaseQuantity(quantity);
         storeItemRepository.save(storeItem);
     }
 
@@ -48,7 +43,7 @@ public class StoreServiceImpl implements StoreService {
         StoreItem storeItem = storeItemRepository.findById(itemId)
                 .orElseThrow(() -> new IllegalArgumentException("Store item not found"));
 
-        storeItem.setQuantity(-1);
+        storeItem.setQuantity(Quantity.INFINITE);
         storeItemRepository.save(storeItem);
     }
 
@@ -56,7 +51,7 @@ public class StoreServiceImpl implements StoreService {
         StoreItem storeItem = storeItemRepository.findById(itemId)
                 .orElseThrow(() -> new IllegalArgumentException("Store item not found"));
 
-        storeItem.setQuantity(0);
+        storeItem.setQuantity(Quantity.BLOCKED);
         storeItemRepository.save(storeItem);
     }
 }

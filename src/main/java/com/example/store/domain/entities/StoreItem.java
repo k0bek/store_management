@@ -1,7 +1,9 @@
 package com.example.store.domain.entities;
 
+import com.example.store.domain.Quantity;
 import com.example.store.domain.StoreItemStatus;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,11 +29,16 @@ public class StoreItem {
     @Column(nullable = false, unique = true)
     private String code;
 
-    @Column(nullable = false)
-    private Integer quantity;
+    @Getter(AccessLevel.NONE)
+    @Embedded
+    private Quantity quantity;
+
+    public Integer getQuantity() {
+        return quantity.getValue();
+    }
 
     @Column(nullable = false)
-    private Integer maxCapacity;
+    private Quantity maxCapacity;
 
     @ManyToOne()
     @JoinColumn(name = "store_id", nullable = false)
@@ -76,5 +83,13 @@ public class StoreItem {
     @Override
     public int hashCode() {
         return Objects.hash(id, name, code, quantity, maxCapacity, store, rowNumber, columnNumber, storeItemStatus, createdAt);
+    }
+
+    public void decreaseQuantity(int quantity) {
+        this.quantity = this.quantity.decreased(quantity);
+    }
+
+    public void increaseQuantity(int quantity) {
+        this.quantity = this.quantity.increased(quantity);
     }
 }
