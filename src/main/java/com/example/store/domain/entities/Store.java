@@ -3,6 +3,7 @@ package com.example.store.domain.entities;
 import com.example.store.domain.StoreType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,7 +18,9 @@ import java.util.Objects;
 @AllArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Store {
+    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -60,15 +63,5 @@ public class Store {
         this.updatedAt = LocalDateTime.now();
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        Store store = (Store) o;
-        return Objects.equals(id, store.id) && Objects.equals(name, store.name) && Objects.equals(address, store.address) && Objects.equals(totalCapacity, store.totalCapacity) && Objects.equals(currentOccupancy, store.currentOccupancy) && storeType == store.storeType && Objects.equals(storeItems, store.storeItems) && Objects.equals(createdAt, store.createdAt);
-    }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, address, totalCapacity, currentOccupancy, storeType, storeItems, createdAt);
-    }
 }
